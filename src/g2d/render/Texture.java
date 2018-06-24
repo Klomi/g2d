@@ -48,6 +48,7 @@ public class Texture {
         Texture t = new Texture(img.getWidth(), img.getHeight());
         byte data[] = ImageUtils.readRGBAPixels(ImageUtils.flipImageVertically(img));
         ByteBuffer buf = BufferUtils.createByteBuffer(data.length).put(data);
+        buf.flip();
         t.setData(buf);
         return t;
     }

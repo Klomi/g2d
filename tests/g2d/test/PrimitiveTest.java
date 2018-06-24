@@ -36,8 +36,8 @@ public class PrimitiveTest {
 
         new Window(800, 800, "PrimitiveTest") {
             public void init() {
-                Renderer.init();
                 glEnable(GL_BLEND);
+                Renderer.init();
                 glViewport(0, 0, 800, 800);
                 glClearColor(0, 0, 0, 1);
                 Renderer.setMatrix(new Matrix4d().ortho(0, 800, 0, 800, 1, -1));
