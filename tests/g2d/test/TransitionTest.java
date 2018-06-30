@@ -4,7 +4,8 @@ import g2d.Image;
 import g2d.Sprite;
 import g2d.render.Renderer;
 import g2d.render.Texture;
-import g2d.transitions.*;
+import g2d.transitions.Interpolator;
+import g2d.transitions.Transition;
 import g2d.utils.ImageUtils;
 import org.joml.Matrix4d;
 
@@ -33,9 +34,7 @@ public class TransitionTest {
                 img.setHeight(32);
 
                 s1 = new Sprite(img);
-                Transition t = TranslateTransition.translateX(0, 1.5, 0, 800);
-                t.interpolator = Interpolator.EASEINOUT_BACK;
-                s1.addTransition(t);
+                s1.addTransition(new Transition(0, 1.5, Interpolator.EASEINOUT_BACK, "X", new double[]{0, 800}));
                 s1.x = 0;
                 s1.y = 400;
                 s1.sx = 8;
@@ -50,11 +49,14 @@ public class TransitionTest {
 
             public void renderLoop() {
                 glClear(GL_COLOR_BUFFER_BIT);
-                if (time % 60 == 0) {
+                if (time % 120 == 0) {
                     s2.clearTransitions();
-                    s2.addTransition(RotateTransition.rotateZ(time / 60.0, 1, 0, Math.PI * 2));
-                    s2.addTransition(ScaleTransition.scaleXY(time / 60.0, 1, new double[]{8, 8}, new double[]{16, 16}));
-                    s2.addTransition(ColorTransition.alpha(time / 60.0, 1, 1, 0));
+                    s2.addTransition(new Transition(time / 60.0, 2, Interpolator.EASEOUT_QUAD,
+                            "rot[0]|sx|sy|alpha",
+                            new double[]{0, Math.PI * 2},
+                            new double[]{8, 16},
+                            new double[]{8, 16},
+                            new double[]{1, 0}));
                 }
 
                 s1.render(time / 60.0);

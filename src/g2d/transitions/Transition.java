@@ -2,16 +2,38 @@ package g2d.transitions;
 
 import g2d.Sprite;
 
-public abstract class Transition {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Transition {
     public double timeOffset = 0, duration = 0;
+    public Map<String, double[]> propValues = new HashMap<>();
     public Interpolator interpolator = Interpolator.LINEAR;
 
-    public abstract void applyTo(Sprite s, double time);
+    public Transition(double timeOffset, double duration, String properties, double[]... values) {
+        this(timeOffset, duration, Interpolator.LINEAR, properties, values);
+    }
 
-    public double factor(double time) {
+    public Transition(double timeOffset, double duration, Interpolator interpolator, String properties, double[]... values) {
+        this.timeOffset = timeOffset;
+        this.duration = duration;
+        this.interpolator = interpolator;
+
+        String segments[] = properties.split("\\|");
+        if (segments.length != values.length)
+            throw new IllegalArgumentException("number of properties != values.length");
+        for (int i = 0; i < segments.length; i++)
+            propValues.put(segments[i], values[i]);
+    }
+
+    public void applyTo(Sprite s, double time) {
         double t = (time - timeOffset) / duration;
         t = Math.min(Math.max(t, 0), 1);
-        return interpolator.curve(t);
+        t = interpolator.curve(t);
+        for (Map.Entry<String, double[]> entry : propValues.entrySet()) {
+            double vals[] = entry.getValue();
+            s.set(entry.getKey(), vals[0] * (1 - t) + vals[1] * t);
+        }
     }
 
     public boolean isActive(double time) {
