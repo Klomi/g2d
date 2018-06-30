@@ -45,7 +45,8 @@ public class Sprite {
     private Sprite parent = null;
     private List<Sprite> childs = new LinkedList<>();
     public boolean relativePosition = true;
-    public boolean inheritColor = false;
+    public boolean multiplyColor = false;
+    public boolean multiplyAlpha = false;
 
     public Sprite() {
 
@@ -137,12 +138,18 @@ public class Sprite {
     }
 
     private double[] getColor() {
-        double c[] = {color[0], color[1], color[2], color[3]};
-        if ((parent != null) && inheritColor) {
+        if ((parent != null) && (multiplyColor || multiplyAlpha)) {
+            double c[] = {color[0], color[1], color[2], color[3]};
             double pc[] = parent.getColor();
-            for (int i = 0; i < 4; i++)
-                c[i] *= pc[i];
+            if(multiplyColor) {
+                c[0] *= pc[0];
+                c[1] *= pc[1];
+                c[2] *= pc[2];
+            }
+            if(multiplyAlpha)
+                c[3] *= pc[3];
+            return c;
         }
-        return c;
+        return color;
     }
 }

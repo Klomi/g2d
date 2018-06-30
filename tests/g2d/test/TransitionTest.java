@@ -4,10 +4,7 @@ import g2d.Image;
 import g2d.Sprite;
 import g2d.render.Renderer;
 import g2d.render.Texture;
-import g2d.transitions.ColorTransition;
-import g2d.transitions.RotateTransition;
-import g2d.transitions.ScaleTransition;
-import g2d.transitions.TranslateTransition;
+import g2d.transitions.*;
 import g2d.utils.ImageUtils;
 import org.joml.Matrix4d;
 
@@ -36,8 +33,10 @@ public class TransitionTest {
                 img.setHeight(32);
 
                 s1 = new Sprite(img);
-                s1.addTransition(TranslateTransition.translateX(0, 3, 400, 600));
-                s1.x = 400;
+                Transition t = TranslateTransition.translateX(0, 1.5, 0, 800);
+                t.interpolator = Interpolator.EASEINOUT_BACK;
+                s1.addTransition(t);
+                s1.x = 0;
                 s1.y = 400;
                 s1.sx = 8;
                 s1.sy = 8;
