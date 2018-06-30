@@ -58,6 +58,98 @@ public class Sprite {
         this.h = img.getHeight();
     }
 
+    public double get(String propertyName) {
+        propertyName = propertyName.toLowerCase();
+        double val = 0;
+        switch (propertyName) {
+            case "x":
+                val = x;
+                break;
+            case "y":
+                val = y;
+                break;
+            case "sx":
+                val = sx;
+                break;
+            case "sy":
+                val = sy;
+                break;
+            case "ax":
+                val = ax;
+                break;
+            case "ay":
+                val = ay;
+                break;
+            case "rot[0]":
+                val = rot[0];
+                break;
+            case "rot[1]":
+                val = rot[1];
+                break;
+            case "rot[2]":
+                val = rot[2];
+                break;
+            case "red":
+                val = color[0];
+                break;
+            case "green":
+                val = color[1];
+                break;
+            case "blue":
+                val = color[2];
+                break;
+            case "alpha":
+                val = color[3];
+                break;
+        }
+        return val;
+    }
+
+    public void set(String propertyName, double val) {
+        propertyName = propertyName.toLowerCase();
+        switch (propertyName) {
+            case "x":
+                x = val;
+                break;
+            case "y":
+                y = val;
+                break;
+            case "sx":
+                sx = val;
+                break;
+            case "sy":
+                sy = val;
+                break;
+            case "ax":
+                ax = val;
+                break;
+            case "ay":
+                ay = val;
+                break;
+            case "rot[0]":
+                rot[0] = val;
+                break;
+            case "rot[1]":
+                rot[1] = val;
+                break;
+            case "rot[2]":
+                rot[2] = val;
+                break;
+            case "red":
+                color[0] = val;
+                break;
+            case "green":
+                color[1] = val;
+                break;
+            case "blue":
+                color[2] = val;
+                break;
+            case "alpha":
+                color[3] = val;
+                break;
+        }
+    }
+
     public void update(double time) {
         for (Transition t : transitions)
             t.applyTo(this, time);
@@ -141,12 +233,12 @@ public class Sprite {
         if ((parent != null) && (multiplyColor || multiplyAlpha)) {
             double c[] = {color[0], color[1], color[2], color[3]};
             double pc[] = parent.getColor();
-            if(multiplyColor) {
+            if (multiplyColor) {
                 c[0] *= pc[0];
                 c[1] *= pc[1];
                 c[2] *= pc[2];
             }
-            if(multiplyAlpha)
+            if (multiplyAlpha)
                 c[3] *= pc[3];
             return c;
         }
