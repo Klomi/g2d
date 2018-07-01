@@ -1,4 +1,4 @@
-package g2d.transitions;
+package g2d;
 
 @FunctionalInterface
 public interface Interpolator {

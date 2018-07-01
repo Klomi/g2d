@@ -1,5 +1,7 @@
 package g2d.render;
 
+import java.util.Objects;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL20.glBlendEquationSeparate;
@@ -44,23 +46,21 @@ public final class BlendMode {
             glBlendFuncSeparate(srcFactor, dstFactor, srcAlpha, dstAlpha);
     }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof BlendMode) {
-            BlendMode blendMode = (BlendMode) obj;
-            return (this.funcRGB == blendMode.funcRGB) && (this.funcAlpha == blendMode.funcAlpha)
-                    && (this.srcFactor == blendMode.srcFactor) && (this.dstFactor == blendMode.dstFactor)
-                    && (this.srcAlpha == blendMode.srcAlpha) && (this.dstAlpha == blendMode.dstAlpha);
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BlendMode blendMode = (BlendMode) o;
+        return funcRGB == blendMode.funcRGB &&
+                funcAlpha == blendMode.funcAlpha &&
+                srcFactor == blendMode.srcFactor &&
+                dstFactor == blendMode.dstFactor &&
+                srcAlpha == blendMode.srcAlpha &&
+                dstAlpha == blendMode.dstAlpha;
     }
 
+    @Override
     public int hashCode() {
-        int sum = funcRGB;
-        sum = sum * 31 + funcAlpha;
-        sum = sum * 31 + srcFactor;
-        sum = sum * 31 + dstFactor;
-        sum = sum * 31 + srcAlpha;
-        sum = sum * 31 + dstAlpha;
-        return sum;
+        return Objects.hash(funcRGB, funcAlpha, srcFactor, dstFactor, srcAlpha, dstAlpha);
     }
 }

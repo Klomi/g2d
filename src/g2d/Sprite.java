@@ -3,7 +3,6 @@ package g2d;
 import g2d.render.BlendMode;
 import g2d.render.Primitive;
 import g2d.render.Renderer;
-import g2d.transitions.Transition;
 import org.joml.Matrix4d;
 import org.joml.Vector2d;
 import org.joml.Vector4d;
@@ -89,15 +88,19 @@ public class Sprite {
             case "rot[2]":
                 val = rot[2];
                 break;
+            case "color[0]":
             case "red":
                 val = color[0];
                 break;
+            case "color[1]":
             case "green":
                 val = color[1];
                 break;
+            case "color[2]":
             case "blue":
                 val = color[2];
                 break;
+            case "color[3]":
             case "alpha":
                 val = color[3];
                 break;
@@ -135,15 +138,19 @@ public class Sprite {
             case "rot[2]":
                 rot[2] = val;
                 break;
+            case "color[0]":
             case "red":
                 color[0] = val;
                 break;
+            case "color[1]":
             case "green":
                 color[1] = val;
                 break;
+            case "color[2]":
             case "blue":
                 color[2] = val;
                 break;
+            case "color[3]":
             case "alpha":
                 color[3] = val;
                 break;
@@ -152,7 +159,7 @@ public class Sprite {
 
     public void update(double time) {
         for (Transition t : transitions)
-            t.applyTo(this, time);
+            t.transit(this, time);
         mat = null;
     }
 

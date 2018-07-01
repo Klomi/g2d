@@ -1,11 +1,11 @@
 package g2d.test;
 
 import g2d.Image;
+import g2d.Interpolator;
 import g2d.Sprite;
+import g2d.Transition;
 import g2d.render.Renderer;
 import g2d.render.Texture;
-import g2d.transitions.Interpolator;
-import g2d.transitions.Transition;
 import g2d.utils.ImageUtils;
 import org.joml.Matrix4d;
 
@@ -34,7 +34,13 @@ public class TransitionTest {
                 img.setHeight(32);
 
                 s1 = new Sprite(img);
-                s1.addTransition(new Transition(0, 1.5, Interpolator.EASEINOUT_BACK, "X", new double[]{0, 800}));
+                new Transition.Builder()
+                        .timeOffset(0)
+                        .duration(1.5)
+                        .interpolator(Interpolator.EASEINOUT_BACK)
+                        .change("x", 0, 800)
+                        .build()
+                        .applyTo(s1);
                 s1.x = 0;
                 s1.y = 400;
                 s1.sx = 8;
@@ -51,12 +57,16 @@ public class TransitionTest {
                 glClear(GL_COLOR_BUFFER_BIT);
                 if (time % 120 == 0) {
                     s2.clearTransitions();
-                    s2.addTransition(new Transition(time / 60.0, 2, Interpolator.EASEOUT_QUAD,
-                            "rot[0]|sx|sy|alpha",
-                            new double[]{0, Math.PI * 2},
-                            new double[]{8, 16},
-                            new double[]{8, 16},
-                            new double[]{1, 0}));
+                    new Transition.Builder()
+                            .timeOffset(time / 60.0)
+                            .duration(2)
+                            .interpolator(Interpolator.EASEOUT_QUAD)
+                            .change("rot[0]", 0, Math.PI * 2)
+                            .change("sx", 8, 16)
+                            .change("sy", 8, 16)
+                            .change("alpha", 1, 0)
+                            .build()
+                            .applyTo(s2);
                 }
 
                 s1.render(time / 60.0);
