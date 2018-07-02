@@ -38,19 +38,15 @@ public class TransitionTest {
                         .timeOffset(0)
                         .duration(1.5)
                         .interpolator(Interpolator.EASEINOUT_BACK)
-                        .change("x", 0, 800)
+                        .change(Sprite.InterpolatableProperties.X, 0, 800)
                         .build()
                         .applyTo(s1);
-                s1.x = 0;
-                s1.y = 400;
-                s1.sx = 8;
-                s1.sy = 8;
+                s1.setPosition(0, 400);
+                s1.setScale(8, 8);
 
                 s2 = new Sprite(img);
-                s2.x = 400;
-                s2.y = 400;
-                s2.sx = 8;
-                s2.sy = 8;
+                s2.setPosition(400, 400);
+                s2.setScale(8, 8);
             }
 
             public void renderLoop() {
@@ -61,10 +57,10 @@ public class TransitionTest {
                             .timeOffset(time / 60.0)
                             .duration(2)
                             .interpolator(Interpolator.EASEOUT_QUAD)
-                            .change("rot[0]", 0, Math.PI * 2)
-                            .change("sx", 8, 16)
-                            .change("sy", 8, 16)
-                            .change("alpha", 1, 0)
+                            .change(Sprite.InterpolatableProperties.ROTATION_ALPHA, 0, Math.PI * 2)
+                            .change(Sprite.InterpolatableProperties.SCALE_X, 8, 16)
+                            .change(Sprite.InterpolatableProperties.SCALE_Y, 8, 16)
+                            .change(Sprite.InterpolatableProperties.ALPHA, 1, 0)
                             .build()
                             .applyTo(s2);
                 }

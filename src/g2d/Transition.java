@@ -27,12 +27,12 @@ public class Transition {
         return interpolator;
     }
 
-    public void transit(Sprite s, double time) {
+    public void update(Sprite s, double time) {
         double t = (time - timeOffset) / duration;
         t = Math.min(Math.max(t, 0), 1);
         t = interpolator.curve(t);
         for (PropertyChange c : propertyChanges)
-            s.set(c.propName, c.fromVal * (1 - t) + c.toVal * t);
+            s.set(c.prop, c.fromVal * (1 - t) + c.toVal * t);
     }
 
     public boolean isActive(double time) {
@@ -65,9 +65,9 @@ public class Transition {
             return this;
         }
 
-        public Builder change(String propName, double fromVal, double toVal) {
+        public Builder change(Sprite.InterpolatableProperties prop, double fromVal, double toVal) {
             PropertyChange c = new PropertyChange();
-            c.propName = propName;
+            c.prop = prop;
             c.fromVal = fromVal;
             c.toVal = toVal;
             t.propertyChanges.add(c);
@@ -80,7 +80,7 @@ public class Transition {
     }
 
     private static class PropertyChange {
-        String propName = null;
+        Sprite.InterpolatableProperties prop = null;
         double fromVal = 0, toVal = 0;
     }
 }

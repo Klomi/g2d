@@ -20,19 +20,19 @@ public class Sprite {
     public double x = 0, y = 0, w = 0, h = 0;
 
     // Render priority
-    public int z_index = 0;
+    public int zIndex = 0;
 
-    // Anchor
+    // Anchors
     public double ax = 0.5, ay = 0.5;
 
     // Scaling
     public double sx = 1, sy = 1;
 
     // Color RGBA
-    public double color[] = {1, 1, 1, 1};
+    public double color[] = new double[]{1, 1, 1, 1};
 
-    // Rotation angles XY, XZ, YZ
-    public double rot[] = {0, 0, 0};
+    // Rotation angles alpha, beta, gamma
+    public double rotation[] = new double[]{0, 0, 0};
 
     // Cached transform matrix
     private Matrix4d mat = null;
@@ -43,9 +43,9 @@ public class Sprite {
     // Sprite tree
     private Sprite parent = null;
     private List<Sprite> childs = new LinkedList<>();
-    public boolean relativePosition = true;
-    public boolean multiplyColor = false;
-    public boolean multiplyAlpha = false;
+    public boolean positionRelativeToParent = true;
+    public boolean multiplyParentColor = false;
+    public boolean multiplyParentAlpha = false;
 
     public Sprite() {
 
@@ -57,114 +57,152 @@ public class Sprite {
         this.h = img.getHeight();
     }
 
-    public double get(String propertyName) {
-        propertyName = propertyName.toLowerCase();
-        double val = 0;
-        switch (propertyName) {
-            case "x":
-                val = x;
-                break;
-            case "y":
-                val = y;
-                break;
-            case "sx":
-                val = sx;
-                break;
-            case "sy":
-                val = sy;
-                break;
-            case "ax":
-                val = ax;
-                break;
-            case "ay":
-                val = ay;
-                break;
-            case "rot[0]":
-                val = rot[0];
-                break;
-            case "rot[1]":
-                val = rot[1];
-                break;
-            case "rot[2]":
-                val = rot[2];
-                break;
-            case "color[0]":
-            case "red":
-                val = color[0];
-                break;
-            case "color[1]":
-            case "green":
-                val = color[1];
-                break;
-            case "color[2]":
-            case "blue":
-                val = color[2];
-                break;
-            case "color[3]":
-            case "alpha":
-                val = color[3];
-                break;
+    public double get(InterpolatableProperties prop) {
+        switch (prop) {
+            case X:
+                return x;
+            case Y:
+                return y;
+            case SCALE_X:
+                return sx;
+            case SCALE_Y:
+                return sy;
+            case RED:
+                return color[0];
+            case GREEN:
+                return color[1];
+            case BLUE:
+                return color[2];
+            case ALPHA:
+                return color[3];
+            case ROTATION_ALPHA:
+                return rotation[0];
+            case ROTATION_BETA:
+                return rotation[1];
+            case ROTATION_GAMMA:
+                return rotation[2];
         }
-        return val;
+        return 0;
     }
 
-    public void set(String propertyName, double val) {
-        propertyName = propertyName.toLowerCase();
-        switch (propertyName) {
-            case "x":
+    public void set(InterpolatableProperties prop, double val) {
+        switch (prop) {
+            case X:
                 x = val;
                 break;
-            case "y":
+            case Y:
                 y = val;
                 break;
-            case "sx":
+            case SCALE_X:
                 sx = val;
                 break;
-            case "sy":
+            case SCALE_Y:
                 sy = val;
                 break;
-            case "ax":
-                ax = val;
-                break;
-            case "ay":
-                ay = val;
-                break;
-            case "rot[0]":
-                rot[0] = val;
-                break;
-            case "rot[1]":
-                rot[1] = val;
-                break;
-            case "rot[2]":
-                rot[2] = val;
-                break;
-            case "color[0]":
-            case "red":
+            case RED:
                 color[0] = val;
                 break;
-            case "color[1]":
-            case "green":
+            case GREEN:
                 color[1] = val;
                 break;
-            case "color[2]":
-            case "blue":
+            case BLUE:
                 color[2] = val;
                 break;
-            case "color[3]":
-            case "alpha":
+            case ALPHA:
                 color[3] = val;
                 break;
+            case ROTATION_ALPHA:
+                rotation[0] = val;
+                break;
+            case ROTATION_BETA:
+                rotation[1] = val;
+                break;
+            case ROTATION_GAMMA:
+                rotation[2] = val;
+                break;
         }
+    }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setSize(double w, double h) {
+        this.w = w;
+        this.h = h;
+    }
+
+    public void setScale(double sx, double sy) {
+        this.sx = sx;
+        this.sy = sy;
+    }
+
+    public void setAnchor(double ax, double ay) {
+        this.ax = ax;
+        this.ay = ay;
+    }
+
+    public void setColor(double r, double g, double b) {
+        this.color[0] = r;
+        this.color[1] = g;
+        this.color[2] = b;
+    }
+
+    public void setColor(double r, double g, double b, double a) {
+        this.color[0] = r;
+        this.color[1] = g;
+        this.color[2] = b;
+        this.color[3] = a;
+    }
+
+    public void setRed(double r) {
+        this.color[0] = r;
+    }
+
+    public void setGreen(double g) {
+        this.color[1] = g;
+    }
+
+    public void setBlue(double b) {
+        this.color[2] = b;
+    }
+
+    public void setAlpha(double a) {
+        this.color[3] = a;
+    }
+
+    public void setRotation(double... components) {
+        System.arraycopy(components, 0, this.color, 0, Math.min(components.length, 3));
+    }
+
+    public void translate(double tx, double ty) {
+        this.x += tx;
+        this.y += ty;
+    }
+
+    public void scaleBy(double sx, double sy) {
+        this.sx *= sx;
+        this.sy *= sy;
+    }
+
+    public void rotateBy(double... components) {
+        for (int i = 0; i < Math.min(components.length, 3); i++)
+            this.rotation[i] += components[i];
     }
 
     public void update(double time) {
         for (Transition t : transitions)
-            t.transit(this, time);
+            t.update(this, time);
         mat = null;
     }
 
     public void render(double time) {
         update(time);
+        for (Sprite s : childs)
+            s.render(time);
+        if ((w == 0) || (h == 0))
+            return;
 
         Primitive prim = new Primitive(GL_TRIANGLES, 6);
         prim.rs.blendMode = blendMode;
@@ -180,7 +218,7 @@ public class Sprite {
         for (int i = 0; i < 4; i++)
             pts[i] = getTransformMatrix().transform(pts[i]);
         final Vector2d texCoords[] = img.getTexCoords();
-        final double fc[] = getColor();
+        final double fc[] = calcColor();
 
         for (int i = 0; i < 6; i++) {
             prim.posData.put((float) pts[index[i]].x).put((float) pts[index[i]].y);
@@ -192,8 +230,10 @@ public class Sprite {
     }
 
     public void addChild(Sprite s) {
-        childs.add(s);
+        if (s.parent != null)
+            s.parent.removeChild(s);
         s.parent = this;
+        childs.add(s);
     }
 
     public void removeChild(Sprite s) {
@@ -228,27 +268,32 @@ public class Sprite {
         if (mat == null) {
             mat = new Matrix4d();
             mat.translate(x, y, 0);
-            mat.rotateZYX(rot[0], rot[1], rot[2]);
+            mat.rotateZYX(rotation[0], rotation[1], rotation[2]);
             mat.scale(sx, sy, 1);
-            if ((parent != null) && relativePosition)
+            if ((parent != null) && positionRelativeToParent)
                 mat = parent.getTransformMatrix().mul(mat);
         }
         return mat;
     }
 
-    private double[] getColor() {
-        if ((parent != null) && (multiplyColor || multiplyAlpha)) {
-            double c[] = {color[0], color[1], color[2], color[3]};
-            double pc[] = parent.getColor();
-            if (multiplyColor) {
+    private double[] calcColor() {
+        double c[] = {color[0], color[1], color[2], color[3]};
+        if ((parent != null) && (multiplyParentColor || multiplyParentAlpha)) {
+            double pc[] = parent.calcColor();
+            if (multiplyParentColor) {
                 c[0] *= pc[0];
                 c[1] *= pc[1];
                 c[2] *= pc[2];
             }
-            if (multiplyAlpha)
+            if (multiplyParentAlpha)
                 c[3] *= pc[3];
-            return c;
         }
-        return color;
+        return c;
+    }
+
+    public enum InterpolatableProperties {
+        X, Y, SCALE_X, SCALE_Y,
+        ROTATION_ALPHA, ROTATION_BETA, ROTATION_GAMMA,
+        RED, GREEN, BLUE, ALPHA
     }
 }

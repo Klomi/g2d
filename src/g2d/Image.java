@@ -3,7 +3,9 @@ package g2d;
 import g2d.render.Texture;
 import org.joml.Vector2d;
 
-public class Image {
+import java.util.Objects;
+
+public final class Image {
     private Texture texture = null;
 
     // Cached Texture Coordinates
@@ -124,5 +126,24 @@ public class Image {
             texCoords[2] = texCoords[3];
             texCoords[3] = t;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return x == image.x &&
+                y == image.y &&
+                w == image.w &&
+                h == image.h &&
+                flipH == image.flipH &&
+                flipV == image.flipV &&
+                texture.id == image.texture.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(texture.id, x, y, w, h, flipH, flipV);
     }
 }

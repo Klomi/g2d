@@ -40,7 +40,7 @@ public class SpriteTest {
 
                 s2 = new Sprite(img);
                 s2.blendMode = BlendMode.ADD;
-                s2.rot[0] = Math.PI * 2 / 3;
+                s2.rotation[0] = Math.PI * 2 / 3;
                 s2.x = 400;
                 s2.y = 400;
                 s2.color = new double[]{0.5, 1, 0.5, 1};
@@ -49,7 +49,7 @@ public class SpriteTest {
 
                 s3 = new Sprite(img);
                 s3.blendMode = BlendMode.ADD;
-                s3.rot[0] = -Math.PI * 2 / 3;
+                s3.rotation[0] = -Math.PI * 2 / 3;
                 s3.x = 400;
                 s3.y = 400;
                 s3.color = new double[]{0.5, 0.5, 1, 1};
