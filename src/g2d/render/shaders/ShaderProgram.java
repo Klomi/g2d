@@ -1,4 +1,4 @@
-package g2d.render;
+package g2d.render.shaders;
 
 import java.util.HashMap;
 import java.util.Map;

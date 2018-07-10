@@ -1,4 +1,4 @@
-package g2d.render;
+package g2d.render.shaders;
 
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 

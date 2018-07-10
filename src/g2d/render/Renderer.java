@@ -1,5 +1,7 @@
 package g2d.render;
 
+import g2d.render.shaders.DefaultShaderProgram;
+import g2d.render.shaders.ShaderProgram;
 import org.joml.Matrix4d;
 import org.lwjgl.BufferUtils;
 

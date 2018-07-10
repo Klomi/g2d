@@ -1,4 +1,4 @@
-package g2d.render;
+package g2d.render.shaders;
 
 public class DefaultShaderProgram extends ShaderProgram {
     public DefaultShaderProgram() {

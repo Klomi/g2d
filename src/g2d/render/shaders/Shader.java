@@ -1,4 +1,4 @@
-package g2d.render;
+package g2d.render.shaders;
 
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
